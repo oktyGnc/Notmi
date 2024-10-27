@@ -1,4 +1,8 @@
 package com.oktaygenc.notmi
 
-class NoteApp {
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
+class NoteApp: Application() {
 }

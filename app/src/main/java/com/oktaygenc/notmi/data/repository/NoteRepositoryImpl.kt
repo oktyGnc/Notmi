@@ -2,26 +2,33 @@ package com.oktaygenc.notmi.data.repository
 
 import com.oktaygenc.notmi.data.local.NoteDao
 import com.oktaygenc.notmi.data.model.NoteEntity
+import javax.inject.Inject
 
-class NoteRepositoryImpl(private val noteDao: NoteDao) {
+class NoteRepositoryImpl @Inject constructor(private val noteDao: NoteDao) : NoteRepository {
 
-    suspend fun addNote(note: NoteEntity) {
+    override suspend fun insertNote(note: NoteEntity) {
         noteDao.insert(note)
     }
 
-    suspend fun getAllNotes(): List<NoteEntity> {
+    override suspend fun deleteNoteById(id: Int) {
+        noteDao.getNoteById(id)?.let { note ->
+            noteDao.delete(note)
+        }
+    }
+
+    override suspend fun getAllNotes(): List<NoteEntity> {
         return noteDao.getAllNotes()
     }
 
-    suspend fun deleteNote(note: NoteEntity) {
+    override suspend fun deleteNote(note: NoteEntity) {
         noteDao.delete(note)
     }
 
-    suspend fun updateNote(note: NoteEntity) {
+    override suspend fun updateNote(note: NoteEntity) {
         noteDao.update(note)
     }
 
-    suspend fun getNoteById(id: Int): NoteEntity? {
+    override suspend fun getNoteById(id: Int): NoteEntity? {
         return noteDao.getNoteById(id)
     }
 }
