@@ -24,16 +24,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         /*
-
-        * 8. ViewModel Oluşturma NoteViewModel.kt Oluştur: LiveData ile kullanıcı arayüzüne veri sağlayacak ViewModel'i yaz.
-
         * 9. UI GeliştirmeFragment ve Activity’leri Oluştur:AddNoteFragment.kt (not eklemek için)NoteListFragment.kt (not listesini göstermek için)
             NoteDetailFragment.kt (not detaylarını göstermek için NoteAdapter.kt Oluştur: Notların listeleneceği bir adapter oluştur.
-
+            *
         * 10. Kullanıcı Arayüzü TasarımıXML Layout’ları Oluştur: Fragment ve activity'ler için gerekli layout dosyalarını tasarla.
 
         * 11. CRUD İşlemleri UygulaNot Ekleme, Silme, Düzeltme ve Arama Fonksiyonlarını Uygula.
-
          */
     }
 }
