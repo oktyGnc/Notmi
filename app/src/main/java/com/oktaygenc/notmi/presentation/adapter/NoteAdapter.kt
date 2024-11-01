@@ -2,9 +2,11 @@ package com.oktaygenc.notmi.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.oktaygenc.notmi.data.model.NoteEntity
 import com.oktaygenc.notmi.databinding.ItemViewNoteBinding
+import com.oktaygenc.notmi.presentation.ui.NoteListFragmentDirections
 
 class NoteAdapter (private var notes: List<NoteEntity>) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
@@ -25,6 +27,11 @@ class NoteAdapter (private var notes: List<NoteEntity>) : RecyclerView.Adapter<N
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         holder.bind(notes[position])
+        holder.itemView.setOnClickListener {
+            val action = NoteListFragmentDirections.actionNoteListFragmentToNoteDetailFragment()
+            val navController = Navigation.findNavController(holder.itemView)
+            navController.navigate(action)
+        }
     }
 
     fun updateNotes(newNotes: List<NoteEntity>) {

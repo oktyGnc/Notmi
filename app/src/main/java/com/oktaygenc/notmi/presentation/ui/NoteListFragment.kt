@@ -35,8 +35,11 @@ class NoteListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
-        binding.icAdd.setOnClickListener {
-            findNavController().navigate(R.id.action_noteListFragment_to_addNoteFragment)
+        with(binding){
+            icAdd.setOnClickListener {
+                findNavController().navigate(R.id.action_noteListFragment_to_addNoteFragment)
+            }
+
         }
     }
 
