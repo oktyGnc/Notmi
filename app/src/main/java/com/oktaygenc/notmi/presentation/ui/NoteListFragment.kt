@@ -6,7 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.oktaygenc.notmi.R
 import com.oktaygenc.notmi.data.model.NoteEntity
 import com.oktaygenc.notmi.databinding.FragmentNoteListBinding
 import com.oktaygenc.notmi.presentation.adapter.NoteAdapter
@@ -32,6 +35,9 @@ class NoteListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
+        binding.icAdd.setOnClickListener {
+            findNavController().navigate(R.id.action_noteListFragment_to_addNoteFragment)
+        }
     }
 
     private fun setupRecyclerView() {
@@ -79,13 +85,6 @@ class NoteListFragment : Fragment() {
 
 
     }
-
-//        binding.recyclerViewNotes.apply {
-//            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-//            adapter = notesAdapter
-//        }
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -1,10 +1,10 @@
 package com.oktaygenc.notmi.presentation
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.oktaygenc.notmi.R
 import com.oktaygenc.notmi.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +26,17 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
+
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (navController.currentDestination?.id == R.id.noteListFragment) {
+                    finish()
+                } else {
+                    navController.popBackStack()
+                }
+            }
+        })
 
     }/*
         * 9. UI GeliştirmeFragment ve Activity’leri Oluştur:AddNoteFragment.kt (not eklemek için)NoteListFragment.kt (not listesini göstermek için)

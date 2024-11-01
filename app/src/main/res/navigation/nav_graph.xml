@@ -12,7 +12,8 @@
         tools:layout="@layout/fragment_note_list" >
         <action
             android:id="@+id/action_noteListFragment_to_addNoteFragment"
-            app:destination="@id/addNoteFragment" />
+            app:destination="@id/addNoteFragment"
+            app:popUpTo="@id/noteListFragment"/>
         <action
             android:id="@+id/action_noteListFragment_to_noteDetailFragment"
             app:destination="@id/noteDetailFragment" />
