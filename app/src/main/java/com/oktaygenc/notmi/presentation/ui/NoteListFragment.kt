@@ -1,5 +1,6 @@
 package com.oktaygenc.notmi.presentation.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +13,16 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.oktaygenc.notmi.R
 import com.oktaygenc.notmi.data.model.NoteEntity
 import com.oktaygenc.notmi.databinding.FragmentNoteListBinding
+import com.oktaygenc.notmi.presentation.MainActivity
+import com.oktaygenc.notmi.presentation.ToolbarTitleListener
 import com.oktaygenc.notmi.presentation.adapter.NoteAdapter
 import com.oktaygenc.notmi.presentation.viewmodel.NoteViewModel
+import com.oktaygenc.notmi.utils.ToolbarTitle
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class NoteListFragment : Fragment() {
-
+    private var toolbarTitleListener: ToolbarTitleListener? = null
     private var _binding: FragmentNoteListBinding? = null
     private val binding get() = _binding!!
     private val noteViewModel: NoteViewModel by viewModels()
@@ -31,6 +35,10 @@ class NoteListFragment : Fragment() {
         val view = binding.root
         return view
     }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        toolbarTitleListener = context as? ToolbarTitleListener
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,6 +49,12 @@ class NoteListFragment : Fragment() {
             }
 
         }
+        toolbarTitleListener?.setName(ToolbarTitle.LIST)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        toolbarTitleListener = null
     }
 
     private fun setupRecyclerView() {
