@@ -35,7 +35,7 @@ class NoteAdapter (private var notes: List<NoteEntity>) : RecyclerView.Adapter<N
     }
 
     fun updateNotes(newNotes: List<NoteEntity>) {
-        notes = newNotes
+        this.notes = newNotes
         notifyDataSetChanged()
     }
 }

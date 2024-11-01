@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.oktaygenc.notmi.R
+import com.oktaygenc.notmi.data.model.NoteEntity
 import com.oktaygenc.notmi.databinding.FragmentAddNoteBinding
 import com.oktaygenc.notmi.presentation.ToolbarTitleListener
 import com.oktaygenc.notmi.presentation.viewmodel.NoteViewModel
@@ -25,9 +28,9 @@ class AddNoteFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentAddNoteBinding.inflate(layoutInflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         toolbarTitleListener = context as? ToolbarTitleListener
@@ -36,6 +39,17 @@ class AddNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         toolbarTitleListener?.setName(ToolbarTitle.NEW)
+
+        binding.btnSave.setOnClickListener {
+            val id = 0
+            val title = binding.etTitle.text.toString()
+            val content = binding.etContent.text.toString()
+            if (title.isNotEmpty() && content.isNotEmpty()) {
+                val newNote = NoteEntity(id = id, title = title, content = content)
+                noteViewModel.addNote(newNote)
+            }
+            findNavController().navigate(R.id.action_addNoteFragment_to_noteListFragment)
+        }
     }
 
     override fun onDetach() {

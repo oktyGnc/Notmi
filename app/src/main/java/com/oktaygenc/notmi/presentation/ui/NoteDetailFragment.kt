@@ -40,6 +40,7 @@ class NoteDetailFragment : Fragment() {
         toolbarTitleListener?.setName(ToolbarTitle.UPDATE)
 
     }
+
     override fun onDetach() {
         super.onDetach()
         toolbarTitleListener = null

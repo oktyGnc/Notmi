@@ -29,7 +29,7 @@ class NoteViewModel @Inject constructor(private val repository: NoteRepository) 
     fun addNote(note: NoteEntity) {
         viewModelScope.launch {
             repository.insertNote(note)
-            getAllNotes()
+            _notes.value = repository.getAllNotes().reversed()
         }
     }
 
