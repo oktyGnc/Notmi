@@ -77,35 +77,46 @@ class NoteListFragment : Fragment() {
                 return false
             }
         }, viewLifecycleOwner)
-    }
 
-    override fun onDetach() {
-        super.onDetach()
-        toolbarTitleListener = null
-    }
-
-    private fun setupRecyclerView() {
-        val notesAdapter = NoteAdapter { note ->
-            val bundle = Bundle().apply {
-                putInt("noteId", note.id)
-                putString("noteTitle", note.title)
-                putString("noteContent", note.content)
-            }
-            findNavController().navigate(R.id.action_noteListFragment_to_noteDetailFragment, bundle)
-
-        }
-        binding.recyclerView.apply {
-            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            adapter = notesAdapter
-        }
         noteViewModel.notes.observe(viewLifecycleOwner) { notes ->
-            notesAdapter.updateNotes(notes.reversed())
+            if (notes.isEmpty()) {
+                binding.icEmptyNotes.visibility = View.VISIBLE
+            } else {
+                binding.icEmptyNotes.visibility = View.GONE
+            }
+        }
+    }
+
+        override fun onDetach() {
+            super.onDetach()
+            toolbarTitleListener = null
         }
 
-    }
+        private fun setupRecyclerView() {
+            val notesAdapter = NoteAdapter { note ->
+                val bundle = Bundle().apply {
+                    putInt("noteId", note.id)
+                    putString("noteTitle", note.title)
+                    putString("noteContent", note.content)
+                }
+                findNavController().navigate(
+                    R.id.action_noteListFragment_to_noteDetailFragment,
+                    bundle
+                )
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+            }
+            binding.recyclerView.apply {
+                layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                adapter = notesAdapter
+            }
+            noteViewModel.notes.observe(viewLifecycleOwner) { notes ->
+                notesAdapter.updateNotes(notes.reversed())
+            }
+
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            _binding = null
+        }
     }
-}
