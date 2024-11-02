@@ -1,5 +1,6 @@
 package com.oktaygenc.notmi.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.oktaygenc.notmi.data.model.NoteEntity
 import com.oktaygenc.notmi.data.repository.NoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,16 +32,22 @@ class NoteViewModel @Inject constructor(private val repository: NoteRepository) 
         }
     }
 
-    fun addNote(note: NoteEntity) {
+    fun deleteNoteById(id: Int) {
         viewModelScope.launch {
-            repository.insertNote(note)
-            loadAllNotes()
+            try {
+                withContext(Dispatchers.IO) {
+                    repository.deleteNoteById(id)
+                }
+                loadAllNotes()
+            } catch (e: Exception) {
+                Log.e("DeleteNoteById", "Error deleting note", e)
+            }
         }
     }
 
-    fun deleteNoteById(id: Int) {
+    fun addNote(note: NoteEntity) {
         viewModelScope.launch {
-            repository.deleteNoteById(id)
+            repository.insertNote(note)
             loadAllNotes()
         }
     }

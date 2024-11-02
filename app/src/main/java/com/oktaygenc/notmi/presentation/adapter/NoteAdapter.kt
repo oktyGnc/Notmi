@@ -2,9 +2,11 @@ package com.oktaygenc.notmi.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.oktaygenc.notmi.data.model.NoteEntity
 import com.oktaygenc.notmi.databinding.ItemViewNoteBinding
+import com.oktaygenc.notmi.utils.NoteDiffCallback
 
 class NoteAdapter(
     private var notes: MutableList<NoteEntity> = mutableListOf(),
@@ -36,9 +38,12 @@ class NoteAdapter(
     }
 
     fun updateNotes(newNotes: List<NoteEntity>) {
+        val diffCallback = NoteDiffCallback(notes, newNotes)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
         notes.clear()
         notes.addAll(newNotes)
-        notifyDataSetChanged()
-
+        diffResult.dispatchUpdatesTo(this)
     }
+
 }

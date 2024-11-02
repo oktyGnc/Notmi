@@ -15,7 +15,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.oktaygenc.notmi.R
-import com.oktaygenc.notmi.data.model.NoteEntity
 import com.oktaygenc.notmi.databinding.FragmentNoteListBinding
 import com.oktaygenc.notmi.presentation.ToolbarTitleListener
 import com.oktaygenc.notmi.presentation.adapter.NoteAdapter
@@ -25,18 +24,15 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class NoteListFragment : Fragment() {
+
     private var toolbarTitleListener: ToolbarTitleListener? = null
     private var _binding: FragmentNoteListBinding? = null
     private val binding get() = _binding!!
     private val noteViewModel: NoteViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        _binding = FragmentNoteListBinding.inflate(layoutInflater, container, false)
-        val view = binding.root
-        return view
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentNoteListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onAttach(context: Context) {
@@ -47,14 +43,23 @@ class NoteListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
-        with(binding) {
-            icAdd.setOnClickListener {
-                findNavController().navigate(R.id.action_noteListFragment_to_addNoteFragment)
-            }
+        setupToolbarTitle()
+        setupAddNoteButton()
+        setupMenuProvider()
+        observeNotes()
+    }
 
-        }
+    private fun setupToolbarTitle() {
         toolbarTitleListener?.setName(ToolbarTitle.LIST)
+    }
 
+    private fun setupAddNoteButton() {
+        binding.icAdd.setOnClickListener {
+            findNavController().navigate(R.id.action_noteListFragment_to_addNoteFragment)
+        }
+    }
+
+    private fun setupMenuProvider() {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.action_search, menu)
@@ -62,9 +67,7 @@ class NoteListFragment : Fragment() {
                 val searchView = searchItem.actionView as SearchView
 
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        return false
-                    }
+                    override fun onQueryTextSubmit(query: String?): Boolean = false
 
                     override fun onQueryTextChange(newText: String?): Boolean {
                         noteViewModel.searchNotes(newText ?: "")
@@ -73,50 +76,39 @@ class NoteListFragment : Fragment() {
                 })
             }
 
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return false
-            }
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean = false
         }, viewLifecycleOwner)
+    }
 
+    private fun observeNotes() {
         noteViewModel.notes.observe(viewLifecycleOwner) { notes ->
-            if (notes.isEmpty()) {
-                binding.icEmptyNotes.visibility = View.VISIBLE
-            } else {
-                binding.icEmptyNotes.visibility = View.GONE
-            }
+            binding.icEmptyNotes.visibility = if (notes.isEmpty()) View.VISIBLE else View.GONE
+            (binding.recyclerView.adapter as? NoteAdapter)?.updateNotes(notes.reversed())
         }
     }
 
-        override fun onDetach() {
-            super.onDetach()
-            toolbarTitleListener = null
+    private fun setupRecyclerView() {
+        val notesAdapter = NoteAdapter { note ->
+            val bundle = Bundle().apply {
+                putInt("noteId", note.id)
+                putString("noteTitle", note.title)
+                putString("noteContent", note.content)
+            }
+            findNavController().navigate(R.id.action_noteListFragment_to_noteDetailFragment, bundle)
         }
-
-        private fun setupRecyclerView() {
-            val notesAdapter = NoteAdapter { note ->
-                val bundle = Bundle().apply {
-                    putInt("noteId", note.id)
-                    putString("noteTitle", note.title)
-                    putString("noteContent", note.content)
-                }
-                findNavController().navigate(
-                    R.id.action_noteListFragment_to_noteDetailFragment,
-                    bundle
-                )
-
-            }
-            binding.recyclerView.apply {
-                layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                adapter = notesAdapter
-            }
-            noteViewModel.notes.observe(viewLifecycleOwner) { notes ->
-                notesAdapter.updateNotes(notes.reversed())
-            }
-
-        }
-
-        override fun onDestroyView() {
-            super.onDestroyView()
-            _binding = null
+        binding.recyclerView.apply {
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            adapter = notesAdapter
         }
     }
+
+    override fun onDetach() {
+        super.onDetach()
+        toolbarTitleListener = null
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}

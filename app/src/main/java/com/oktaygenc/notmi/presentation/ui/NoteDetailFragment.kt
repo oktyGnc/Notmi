@@ -18,19 +18,15 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class NoteDetailFragment : Fragment() {
+
     private var toolbarTitleListener: ToolbarTitleListener? = null
     private var _binding: FragmentNoteDetailBinding? = null
     private val binding get() = _binding!!
-
     private val noteViewModel: NoteViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        _binding = FragmentNoteDetailBinding.inflate(layoutInflater, container, false)
-        val view = binding.root
-        return view
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentNoteDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onAttach(context: Context) {
@@ -42,28 +38,43 @@ class NoteDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         toolbarTitleListener?.setName(ToolbarTitle.UPDATE)
 
-
         val noteId = arguments?.getInt("noteId") ?: 0
         val noteTitle = arguments?.getString("noteTitle") ?: ""
         val noteContent = arguments?.getString("noteContent") ?: ""
 
+        initializeUI(noteTitle, noteContent)
+        with(binding) {
+        btnCheck.setOnClickListener {
+            updateNote(noteId)
+        }
+        btnDelete.setOnClickListener {
+            deleteNoteById(noteId)
+        }
+    }
+    }
+
+    private fun initializeUI(noteTitle: String, noteContent: String) {
         binding.etTitle.setText(noteTitle)
         binding.etContent.setText(noteContent)
+    }
 
-        binding.btnCheck.setOnClickListener {
-            val updatedNote = NoteEntity(
-                id = noteId,
-                title = binding.etTitle.text.toString(),
-                content = binding.etContent.text.toString()
-            )
-            noteViewModel.updateNote(updatedNote)
-            findNavController().navigate(R.id.action_noteDetailFragment_to_noteListFragment)
-        }
+    private fun updateNote(noteId: Int) {
+        val updatedNote = NoteEntity(
+            id = noteId,
+            title = binding.etTitle.text.toString(),
+            content = binding.etContent.text.toString()
+        )
+        noteViewModel.updateNote(updatedNote)
+        navigateToNoteList()
+    }
 
-        binding.btnDelete.setOnClickListener {
-            noteViewModel.deleteNoteById(noteId)
-            findNavController().navigate(R.id.action_noteDetailFragment_to_noteListFragment)
-        }
+    private fun deleteNoteById(noteId: Int) {
+        noteViewModel.deleteNoteById(noteId)
+        navigateToNoteList()
+    }
+
+    private fun navigateToNoteList() {
+        findNavController().navigate(R.id.action_noteDetailFragment_to_noteListFragment)
     }
 
     override fun onDetach() {
