@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.oktaygenc.notmi.R
+import com.oktaygenc.notmi.data.model.NoteEntity
 import com.oktaygenc.notmi.databinding.FragmentNoteDetailBinding
 import com.oktaygenc.notmi.presentation.ToolbarTitleListener
 import com.oktaygenc.notmi.presentation.viewmodel.NoteViewModel
@@ -39,6 +42,28 @@ class NoteDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         toolbarTitleListener?.setName(ToolbarTitle.UPDATE)
 
+
+        val noteId = arguments?.getInt("noteId") ?: 0
+        val noteTitle = arguments?.getString("noteTitle") ?: ""
+        val noteContent = arguments?.getString("noteContent") ?: ""
+
+        binding.etTitle.setText(noteTitle)
+        binding.etContent.setText(noteContent)
+
+        binding.btnCheck.setOnClickListener {
+            val updatedNote = NoteEntity(
+                id = noteId,
+                title = binding.etTitle.text.toString(),
+                content = binding.etContent.text.toString()
+            )
+            noteViewModel.updateNote(updatedNote)
+            findNavController().navigate(R.id.action_noteDetailFragment_to_noteListFragment)
+        }
+
+        binding.btnDelete.setOnClickListener {
+            noteViewModel.deleteNoteById(noteId)
+            findNavController().navigate(R.id.action_noteDetailFragment_to_noteListFragment)
+        }
     }
 
     override fun onDetach() {

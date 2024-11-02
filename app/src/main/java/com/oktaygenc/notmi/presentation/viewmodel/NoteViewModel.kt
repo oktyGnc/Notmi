@@ -15,43 +15,45 @@ class NoteViewModel @Inject constructor(private val repository: NoteRepository) 
 
     private val _notes = MutableLiveData<List<NoteEntity>>()
     val notes: LiveData<List<NoteEntity>> get() = _notes
+    private var allNotes: List<NoteEntity> = listOf()
 
     init {
-        getAllNotes()
+        loadAllNotes()
     }
 
-    private fun getAllNotes() {
+    private fun loadAllNotes() {
         viewModelScope.launch {
-            _notes.value = repository.getAllNotes()
+            allNotes = repository.getAllNotes()
+            _notes.value = allNotes
         }
     }
 
     fun addNote(note: NoteEntity) {
         viewModelScope.launch {
             repository.insertNote(note)
-            _notes.value = repository.getAllNotes().reversed()
+            loadAllNotes()
         }
     }
 
     fun deleteNoteById(id: Int) {
         viewModelScope.launch {
             repository.deleteNoteById(id)
-            getAllNotes()
+            loadAllNotes()
         }
     }
-
 
     fun updateNote(note: NoteEntity) {
         viewModelScope.launch {
             repository.updateNote(note)
-            getAllNotes()
+            loadAllNotes()
         }
     }
 
     fun searchNotes(query: String) {
-        viewModelScope.launch {
-            val allNotes = repository.getAllNotes()
-            _notes.value = allNotes.filter { note ->
+        _notes.value = if (query.isEmpty()) {
+            allNotes
+        } else {
+            allNotes.filter { note ->
                 note.title?.contains(query, ignoreCase = true) == true || note.content?.contains(
                     query,
                     ignoreCase = true
@@ -59,5 +61,4 @@ class NoteViewModel @Inject constructor(private val repository: NoteRepository) 
             }
         }
     }
-
 }

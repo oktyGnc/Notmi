@@ -3,8 +3,13 @@ package com.oktaygenc.notmi.presentation.ui
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -49,6 +54,29 @@ class NoteListFragment : Fragment() {
 
         }
         toolbarTitleListener?.setName(ToolbarTitle.LIST)
+
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.action_search, menu)
+                val searchItem = menu.findItem(R.id.action_search)
+                val searchView = searchItem.actionView as SearchView
+
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        return false
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        noteViewModel.searchNotes(newText ?: "")
+                        return true
+                    }
+                })
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return false
+            }
+        }, viewLifecycleOwner)
     }
 
     override fun onDetach() {
@@ -57,16 +85,25 @@ class NoteListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-       val notesAdapter = NoteAdapter(emptyList())
+        val notesAdapter = NoteAdapter { note ->
+            val bundle = Bundle().apply {
+                putInt("noteId", note.id)
+                putString("noteTitle", note.title)
+                putString("noteContent", note.content)
+            }
+            findNavController().navigate(R.id.action_noteListFragment_to_noteDetailFragment, bundle)
+
+        }
         binding.recyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = notesAdapter
         }
-
         noteViewModel.notes.observe(viewLifecycleOwner) { notes ->
             notesAdapter.updateNotes(notes.reversed())
         }
+
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

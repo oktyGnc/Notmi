@@ -40,7 +40,7 @@
         tools:text="Content" />
 
     <ImageView
-        android:id="@+id/btnSave"
+        android:id="@+id/btnCheck"
         android:layout_width="68dp"
         android:layout_height="73dp"
         android:layout_marginEnd="16dp"

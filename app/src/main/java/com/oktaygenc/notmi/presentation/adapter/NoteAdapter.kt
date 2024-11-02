@@ -2,23 +2,29 @@ package com.oktaygenc.notmi.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.oktaygenc.notmi.data.model.NoteEntity
 import com.oktaygenc.notmi.databinding.ItemViewNoteBinding
-import com.oktaygenc.notmi.presentation.ui.NoteListFragmentDirections
 
-class NoteAdapter (private var notes: List<NoteEntity>) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
+class NoteAdapter(
+    private var notes: MutableList<NoteEntity> = mutableListOf(),
+    private val onNoteClick: (NoteEntity) -> Unit,
+) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
-    inner class NoteViewHolder(private val binding: ItemViewNoteBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(note:NoteEntity){
+    inner class NoteViewHolder(private val binding: ItemViewNoteBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(note: NoteEntity) {
             binding.textViewTitle.text = note.title
             binding.textViewContent.text = note.content
+            itemView.setOnClickListener {
+                onNoteClick(note)
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
-        val binding = ItemViewNoteBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding =
+            ItemViewNoteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return NoteViewHolder(binding)
     }
 
@@ -27,15 +33,12 @@ class NoteAdapter (private var notes: List<NoteEntity>) : RecyclerView.Adapter<N
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         holder.bind(notes[position])
-        holder.itemView.setOnClickListener {
-            val action = NoteListFragmentDirections.actionNoteListFragmentToNoteDetailFragment()
-            val navController = Navigation.findNavController(holder.itemView)
-            navController.navigate(action)
-        }
     }
 
     fun updateNotes(newNotes: List<NoteEntity>) {
-        this.notes = newNotes
+        notes.clear()
+        notes.addAll(newNotes)
         notifyDataSetChanged()
+
     }
 }
