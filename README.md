@@ -2,12 +2,12 @@
 
 ## 📸 Screenshots
 <p align="center">
-    <img src="https://i.imgur.com/MAxKYm5.png" alt="Icon" width="250" height="auto">
-    <img src="https://i.imgur.com/goEnQJO.png" alt="SplashScreen" width="250" height="auto">
-    <img src="https://i.imgur.com/FHoKuhX.png" alt="Empty Notes" width="250" height="auto">
-    <img src="https://i.imgur.com/FgPx3Ca.png" alt="Notes" width="250" height="auto">
-    <img src="https://i.imgur.com/WBVfc9I.png" alt="Rename or Delete" width="250" height="auto">
-    <img src="https://i.imgur.com/SaXDWGl.png" alt="Save" width="250" height="auto">
+    <img src="Icon.png" alt="Icon" width="250" height="auto">
+    <img src="splashscreen.png" alt="SplashScreen" width="250" height="auto">
+    <img src="emptynote.png" alt="Empty Notes" width="250" height="auto">
+    <img src="Notes.png" alt="Notes" width="250" height="auto">
+    <img src="renameordelete.png" alt="Rename or Delete" width="250" height="auto">
+    <img src="Save.png" alt="Save" width="250" height="auto">
 </p>
 
 
