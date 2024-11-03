@@ -24,7 +24,11 @@ class NoteDetailFragment : Fragment() {
     private val binding get() = _binding!!
     private val noteViewModel: NoteViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
         _binding = FragmentNoteDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -44,13 +48,13 @@ class NoteDetailFragment : Fragment() {
 
         initializeUI(noteTitle, noteContent)
         with(binding) {
-        btnCheck.setOnClickListener {
-            updateNote(noteId)
+            btnCheck.setOnClickListener {
+                updateNote(noteId)
+            }
+            btnDelete.setOnClickListener {
+                deleteNoteById(noteId)
+            }
         }
-        btnDelete.setOnClickListener {
-            deleteNoteById(noteId)
-        }
-    }
     }
 
     private fun initializeUI(noteTitle: String, noteContent: String) {

@@ -5,7 +5,7 @@ import com.oktaygenc.notmi.data.model.NoteEntity
 
 class NoteDiffCallback(
     private val oldList: List<NoteEntity>,
-    private val newList: List<NoteEntity>
+    private val newList: List<NoteEntity>,
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldList.size
 

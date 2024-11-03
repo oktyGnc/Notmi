@@ -9,11 +9,11 @@
         android:id="@+id/noteListFragment"
         android:name="com.oktaygenc.notmi.presentation.ui.NoteListFragment"
         android:label="fragment_note_list"
-        tools:layout="@layout/fragment_note_list" >
+        tools:layout="@layout/fragment_note_list">
         <action
             android:id="@+id/action_noteListFragment_to_addNoteFragment"
             app:destination="@id/addNoteFragment"
-            app:popUpTo="@id/noteListFragment"/>
+            app:popUpTo="@id/noteListFragment" />
         <action
             android:id="@+id/action_noteListFragment_to_noteDetailFragment"
             app:destination="@id/noteDetailFragment" />
@@ -22,7 +22,7 @@
         android:id="@+id/addNoteFragment"
         android:name="com.oktaygenc.notmi.presentation.ui.AddNoteFragment"
         android:label="fragment_add_note"
-        tools:layout="@layout/fragment_add_note" >
+        tools:layout="@layout/fragment_add_note">
         <action
             android:id="@+id/action_addNoteFragment_to_noteListFragment"
             app:destination="@id/noteListFragment" />
@@ -31,7 +31,7 @@
         android:id="@+id/noteDetailFragment"
         android:name="com.oktaygenc.notmi.presentation.ui.NoteDetailFragment"
         android:label="fragment_note_detail"
-        tools:layout="@layout/fragment_note_detail" >
+        tools:layout="@layout/fragment_note_detail">
         <action
             android:id="@+id/action_noteDetailFragment_to_noteListFragment"
             app:destination="@id/noteListFragment" />

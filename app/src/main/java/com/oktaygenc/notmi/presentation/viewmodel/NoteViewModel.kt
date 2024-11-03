@@ -9,7 +9,6 @@ import com.oktaygenc.notmi.data.model.NoteEntity
 import com.oktaygenc.notmi.data.repository.NoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -65,8 +64,7 @@ class NoteViewModel @Inject constructor(private val repository: NoteRepository) 
         } else {
             allNotes.filter { note ->
                 note.title?.contains(query, ignoreCase = true) == true || note.content?.contains(
-                    query,
-                    ignoreCase = true
+                    query, ignoreCase = true
                 ) == true
             }
         }

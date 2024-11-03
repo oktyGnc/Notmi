@@ -30,7 +30,11 @@ class NoteListFragment : Fragment() {
     private val binding get() = _binding!!
     private val noteViewModel: NoteViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
         _binding = FragmentNoteListBinding.inflate(inflater, container, false)
         return binding.root
     }
