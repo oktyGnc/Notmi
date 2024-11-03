@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="ToolbarColor">#967bb6</color>
     <color name="ItemViewColor">#cfafde</color>
+    <color name="TitleColor">#8c63b7</color>
+    <color name="ContentColor">#4a3c58</color>
 </resources>
