@@ -44,6 +44,18 @@
 - ViewBinding
 - LiveData
 
+## ✨ Uygulama Özellikleri
+
+- **Not Ekleme:** Kullanıcılar hızlı bir şekilde yeni notlar ekleyebilir.
+- **Not Düzenleme:** Eklenen notlar, kullanıcı tarafından kolayca düzenlenebilir.
+- **Not Silme:** Kullanıcılar, ihtiyaç duymadıkları notları silebilir.
+- **Boş Not Görseli:** Not listesi boş olduğunda kullanıcıya anlamlı bir görsel sunar.
+- **Kullanıcı Dostu Arayüz:** Modern ve sezgisel bir kullanıcı arayüzü ile kullanıcı deneyimini artırır.
+- **Arama Özelliği:** Kullanıcılar notlarını kolayca bulabilmek için arama yapabilir.
+- **Dinamik Toolbar Başlığı:** Her fragment için uygun başlıklar dinamik olarak ayarlanır.
+- **Splash Screen:** Uygulama açılışında kullanıcıya hoş bir karşılama sunar.
+- **Özelleştirilebilir Tema:** Kullanıcılar uygulamanın görünümünü kendi tercihlerine göre ayarlayabilir.
+
 ## :pencil2: Bağımlılıklar
 
 app build.gradle
